@@ -89,14 +89,14 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
   link.remove();
 
   // Load geometry
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/1gltf/01/doors_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/slabs_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/slabs_Nivel 2.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/walls_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/windows_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/curtainwalls_Nivel 1.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/doors_Nivel 1.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/slabs_Nivel 1.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/slabs_Nivel 2.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/walls_Nivel 1.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/windows_Nivel 1.gltf");
+  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/curtainwalls_Nivel 1.gltf");
   // Load properties
-  const rawProperties = await fetch("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/gltf/01/properties.json");
+  const rawProperties = await fetch("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/properties.json");
   properties = await rawProperties.json();
   // Get spatial tree
   const tree = await constructSpatialTree();
