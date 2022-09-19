@@ -159,7 +159,7 @@ sectionButton.addEventListener("click", () => {
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/zoom-fit-gray.svg");
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
