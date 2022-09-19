@@ -64,7 +64,7 @@ let obj = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 let firstModel = true;
 
-viewer.IFC.setWasmPath("../docs/assets/wasm/");
+viewer.IFC.setWasmPath("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/wasm/");
 // loadIfc("../../IFC/01.ifc");
 // viewer.IFC.loader.ifcManager.useWebWorkers(true, "../docs/assets/worker/IFCWorker.js");
 
