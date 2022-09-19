@@ -152,21 +152,21 @@ loadButton.addEventListener("click", () => {
 });
 
 const sectionButton = createSideMenuButton(
-  "../docs/assets/resources/section-plane-down.svg"
+  "https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/section-plane-down.svg"
 );
 sectionButton.addEventListener("click", () => {
   sectionButton.blur();
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("../assets/resources/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/zoom-fit-gray.svg");
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
   viewer.context.fitToFrame();
 });
 
-const dimensionButton = createSideMenuButton("../docs/assets/resources/dimensions.svg");
+const dimensionButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/dimensions.svg");
 
 dimensionButton.addEventListener("click", () => {
   dimensionButton.blur();
@@ -189,7 +189,7 @@ dimensionButton.addEventListener("click", () => {
   };
 });
 
-const serializeProperties = createSideMenuButton("../docs/assets/resources/json.svg");
+const serializeProperties = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/json.svg");
 
 serializeProperties.addEventListener("click", async () => {
   serializeProperties.blur();
