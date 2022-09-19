@@ -3,7 +3,7 @@ export function createSideMenuButton(iconSource) {
   button.classList.add("basic-button");
 
   const image = document.createElement("img");
-  image.setAttribute("src", iconSource);
+  image.setAttribute("img-src", iconSource);
   image.classList.add("icon");
   button.appendChild(image);
 
