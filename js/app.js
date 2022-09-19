@@ -145,7 +145,7 @@ window.ondblclick = async () => {
 };
 
 ///// Setup UI
-const loadButton = createSideMenuButton("../docs/assets/resources/folder-icon.svg");
+const loadButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
