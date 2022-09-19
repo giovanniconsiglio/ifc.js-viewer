@@ -159,7 +159,7 @@ sectionButton.addEventListener("click", () => {
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("../docs/assets/resources/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton("../assets/resources/zoom-fit-gray.svg");
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
