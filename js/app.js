@@ -64,9 +64,9 @@ let obj = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 let firstModel = true;
 
-viewer.IFC.setWasmPath("../wasm/");
+viewer.IFC.setWasmPath("../docs/assets/wasm/");
 // loadIfc("../../IFC/01.ifc");
-viewer.IFC.loader.ifcManager.useWebWorkers(true, "../worker/IFCWorker.js");
+// viewer.IFC.loader.ifcManager.useWebWorkers(true, "../docs/assets/worker/IFCWorker.js");
 
 viewer.IFC.loader.ifcManager.applyWebIfcConfig({
   USE_FAST_BOOLS: true,
@@ -145,28 +145,28 @@ window.ondblclick = async () => {
 };
 
 ///// Setup UI
-const loadButton = createSideMenuButton("../resources/folder-icon.svg");
+const loadButton = createSideMenuButton("../docs/assets/resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
 });
 
 const sectionButton = createSideMenuButton(
-  "../resources/section-plane-down.svg"
+  "../docs/assets/resources/section-plane-down.svg"
 );
 sectionButton.addEventListener("click", () => {
   sectionButton.blur();
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("../resources/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton("../docs/assets/resources/zoom-fit-gray.svg");
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
   viewer.context.fitToFrame();
 });
 
-const dimensionButton = createSideMenuButton("../resources/dimensions.svg");
+const dimensionButton = createSideMenuButton("../docs/assets/resources/dimensions.svg");
 
 dimensionButton.addEventListener("click", () => {
   dimensionButton.blur();
@@ -189,7 +189,7 @@ dimensionButton.addEventListener("click", () => {
   };
 });
 
-const serializeProperties = createSideMenuButton("../resources/json.svg");
+const serializeProperties = createSideMenuButton("../docs/assets/resources/json.svg");
 
 serializeProperties.addEventListener("click", async () => {
   serializeProperties.blur();
