@@ -73,8 +73,6 @@ viewer.IFC.loader.ifcManager.applyWebIfcConfig({
   COORDINATE_TO_ORIGIN: true,
 });
 
-// viewer.context.renderer.postProduction.active = true;
-
 // Load file button
 const inputElement = document.createElement("input");
 inputElement.setAttribute("type", "file");
@@ -85,12 +83,30 @@ inputElement.addEventListener(
     const ifcURL = URL.createObjectURL(changed.target.files[0]);
     const container = document.getElementById("button-container");
     await loadIfc(ifcURL, viewer, ifcModels, allPlans, container, obj);
-    browserPanel(viewer, obj, container);
+    // browserPanel(viewer, obj, container);
   },
   false
 );
 
 ///// Handle events
+
+// Get properties of selected item
+window.ondblclick = async () => {
+  const result = await viewer.IFC.selector.pickIfcItem(true);
+
+  if (result) {
+    console.log(result);
+    const foundProperties = properties[result.id];
+    getPropertySets(foundProperties);
+    createPropertiesMenu(foundProperties);
+    console.log(foundProperties);
+  } else {
+    removeAllChildren(propsGUI);
+    viewer.IFC.selector.unpickIfcItems();
+    return;
+  }
+};
+
 // On mouse move => prePickIfcItem
 window.onmousemove = () => viewer.IFC.selector.prePickIfcItem();
 
@@ -111,38 +127,39 @@ const handleKeyDown = async (event) => {
 window.onkeydown = handleKeyDown;
 
 // On click => pickIfcItem
-document.addEventListener("click", (event) => {
-  const modelId = viewer.IFC.getModelID();
-  // console.log(modelId>=0);
-  if (modelId !== null) {
-    if (event.shiftKey) {
-      viewer.IFC.selector.pickIfcItem(false, false);
-    } else {
-      viewer.IFC.selector.pickIfcItem();
-    }
-  } else {
-    viewer.IFC.selector.unpickIfcItems();
-  }
-});
+// document.addEventListener("click", (event) => {
+//   const modelId = viewer.IFC.getModelID();
+//   // console.log(modelId>=0);
+//   if (modelId !== null) {
+//     if (event.shiftKey) {
+//       viewer.IFC.selector.pickIfcItem(false, false);
+//     } else {
+//       viewer.IFC.selector.pickIfcItem();
+//     }
+//   } else {
+//     viewer.IFC.selector.unpickIfcItems();
+//   }
+// });
 
 // On double click => getProperties
-window.ondblclick = async () => {
-  if (viewer.clipper.active) {
-    cameraControls.enabled = false; ////////TO BE FIXED
-    viewer.clipper.createPlane();
-  } else {
-    const result = await viewer.IFC.selector.highlightIfcItem(true);
+// window.ondblclick = async () => {
+//   if (viewer.clipper.active) {
+//     cameraControls.enabled = false; ////////TO BE FIXED
+//     viewer.clipper.createPlane();
+//   } else {
+//     const result = await viewer.IFC.selector.highlightIfcItem(true);
 
-    if (!result) {
-      removeAllChildren(propsGUI);
-      viewer.IFC.selector.unHighlightIfcItems();
-      return;
-    }
-    const { modelID, id } = result;
-    const props = await viewer.IFC.getProperties(modelID, id, true, false);
-    createPropertiesMenu(props);
-  }
-};
+//     if (!result) {
+//       removeAllChildren(propsGUI);
+//       viewer.IFC.selector.unHighlightIfcItems();
+//       return;
+//     }
+//     const { modelID, id } = result;
+//     const props = await viewer.IFC.getProperties(modelID, id, true, false);
+//     createPropertiesMenu(props);
+//   }
+// };
+
 
 ///// Setup UI
 const loadButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/folder-icon.svg");
