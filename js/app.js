@@ -206,7 +206,7 @@ dimensionButton.addEventListener("click", () => {
   };
 });
 
-const serializeProperties = createSideMenuButton("./resources/json.svg");
+const serializeProperties = createSideMenuButton("./resources/json.svg?");
 
 serializeProperties.addEventListener("click", async () => {
   serializeProperties.blur();
