@@ -162,7 +162,7 @@ window.onkeydown = handleKeyDown;
 
 
 ///// Setup UI
-const loadButton = createSideMenuButton("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/resources/folder-icon.svg");
+const loadButton = createSideMenuButton("./resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
