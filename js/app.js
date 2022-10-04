@@ -188,7 +188,7 @@ const loadButton2 = document.createElement("button");
 loadButton2.classList.add("basic-button");
 
 const image2 = document.createElement("img");
-image2.setAttribute("src", "https://giovanniconsiglio.github.io/ifc.js-viewer/resources/folder-icon.svg");
+image2.setAttribute("src", "https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/folder-icon.svg");
 image2.classList.add("icon");
 loadButton2.appendChild(image2);
 
