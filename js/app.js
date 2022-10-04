@@ -163,16 +163,16 @@ window.onkeydown = handleKeyDown;
 
 ///// Setup UI
 
-const loadButton = document.createElement("button");
-loadButton.classList.add("basic-button");
+// const loadButton = document.createElement("button");
+// loadButton.classList.add("basic-button");
 
-const image = document.createElement("img");
-image.setAttribute("src", "./resources/folder-icon.svg");
-image.classList.add("icon");
-loadButton.appendChild(image);
+// const image = document.createElement("img");
+// image.setAttribute("src", "./resources/folder-icon.svg");
+// image.classList.add("icon");
+// loadButton.appendChild(image);
 
-const sideMenu = document.getElementById("side-menu-left");
-sideMenu.appendChild(loadButton);
+// const sideMenu = document.getElementById("side-menu-left");
+// sideMenu.appendChild(loadButton);
 
 const loadButton1 = document.createElement("button");
 loadButton1.classList.add("basic-button");
@@ -194,81 +194,81 @@ loadButton2.appendChild(image2);
 
 sideMenu.appendChild(loadButton2);
 
-// const loadButton = createSideMenuButton("./resources/folder-icon.svg");
-loadButton.addEventListener("click", () => {
-  loadButton.blur();
-  inputElement.click();
-});
+// // const loadButton = createSideMenuButton("./resources/folder-icon.svg");
+// loadButton.addEventListener("click", () => {
+//   loadButton.blur();
+//   inputElement.click();
+// });
 
-const sectionButton = createSideMenuButton(
-  "./resources/section-plane-down.svg"
-);
-sectionButton.addEventListener("click", () => {
-  sectionButton.blur();
-  viewer.clipper.toggle();
-});
+// const sectionButton = createSideMenuButton(
+//   "./resources/section-plane-down.svg"
+// );
+// sectionButton.addEventListener("click", () => {
+//   sectionButton.blur();
+//   viewer.clipper.toggle();
+// });
 
-const zoomAllButton = createSideMenuButton("./resources/zoom-fit-gray.svg");
+// const zoomAllButton = createSideMenuButton("./resources/zoom-fit-gray.svg");
 
-zoomAllButton.addEventListener("click", () => {
-  zoomAllButton.blur();
-  viewer.context.fitToFrame();
-});
+// zoomAllButton.addEventListener("click", () => {
+//   zoomAllButton.blur();
+//   viewer.context.fitToFrame();
+// });
 
-const dimensionButton = createSideMenuButton("./resources/dimensions.svg");
+// const dimensionButton = createSideMenuButton("./resources/dimensions.svg");
 
-dimensionButton.addEventListener("click", () => {
-  dimensionButton.blur();
-  viewer.dimensions.active = true;
-  viewer.dimensions.previewActive = true;
-  window.ondblclick = () => {
-    viewer.dimensions.create();
-  };
+// dimensionButton.addEventListener("click", () => {
+//   dimensionButton.blur();
+//   viewer.dimensions.active = true;
+//   viewer.dimensions.previewActive = true;
+//   window.ondblclick = () => {
+//     viewer.dimensions.create();
+//   };
 
-  window.onkeydown = (event) => {
-    if (event.code === "Delete") {
-      viewer.dimensions.delete();
-    }
-  };
-  window.onkeydown = (event) => {
-    if (event.code === "Escape") {
-      viewer.dimensions.active = false;
-      viewer.dimensions.previewActive = false;
-    }
-  };
-});
+//   window.onkeydown = (event) => {
+//     if (event.code === "Delete") {
+//       viewer.dimensions.delete();
+//     }
+//   };
+//   window.onkeydown = (event) => {
+//     if (event.code === "Escape") {
+//       viewer.dimensions.active = false;
+//       viewer.dimensions.previewActive = false;
+//     }
+//   };
+// });
 
-const serializeProperties = createSideMenuButton("json.svg");
+// const serializeProperties = createSideMenuButton("json.svg");
 
-serializeProperties.addEventListener("click", async () => {
-  serializeProperties.blur();
-  let jsonProps = [];
-  // console.log(jsonProps);
-  // console.log(ifcModels);
-  // Serialize properties
-  if (ifcModels.length > 1) {
-    for (let model of ifcModels) {
-      const result = await viewer.IFC.properties.serializeAllProperties(model);
-      // console.log(result);
-      jsonProps.push(result);
-    }
-  } else {
-    const result = await viewer.IFC.properties.serializeAllProperties(
-      ifcModels[0]
-    );
-    // console.log(result);
-    jsonProps = result;
-  }
-  // Download the properties as JSON file
-  const file = new File(jsonProps, "properties");
-  // console.log(jsonProps);
-  // console.log(file);
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(file);
-  link.download = "properties.json";
-  link.click();
-  link.remove();
-});
+// serializeProperties.addEventListener("click", async () => {
+//   serializeProperties.blur();
+//   let jsonProps = [];
+//   // console.log(jsonProps);
+//   // console.log(ifcModels);
+//   // Serialize properties
+//   if (ifcModels.length > 1) {
+//     for (let model of ifcModels) {
+//       const result = await viewer.IFC.properties.serializeAllProperties(model);
+//       // console.log(result);
+//       jsonProps.push(result);
+//     }
+//   } else {
+//     const result = await viewer.IFC.properties.serializeAllProperties(
+//       ifcModels[0]
+//     );
+//     // console.log(result);
+//     jsonProps = result;
+//   }
+//   // Download the properties as JSON file
+//   const file = new File(jsonProps, "properties");
+//   // console.log(jsonProps);
+//   // console.log(file);
+//   const link = document.createElement("a");
+//   link.href = URL.createObjectURL(file);
+//   link.download = "properties.json";
+//   link.click();
+//   link.remove();
+// });
 
 ///// Create properties menu
 const propsGUI = document.getElementById("ifc-property-menu-root");
