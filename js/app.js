@@ -190,7 +190,7 @@ loadButton2.classList.add("basic-button");
 const image2 = document.createElement("img");
 image2.setAttribute("src", "https://giovanniconsiglio.github.io/ifc.js-viewer/resources/folder-icon.svg");
 image2.classList.add("icon");
-loadButton1.appendChild(image2);
+loadButton2.appendChild(image2);
 
 sideMenu.appendChild(loadButton2);
 
