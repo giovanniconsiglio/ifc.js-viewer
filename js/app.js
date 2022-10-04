@@ -184,6 +184,16 @@ loadButton1.appendChild(image1);
 
 sideMenu.appendChild(loadButton1);
 
+const loadButton2 = document.createElement("button");
+loadButton2.classList.add("basic-button");
+
+const image2 = document.createElement("img");
+image2.setAttribute("src", "https://giovanniconsiglio.github.io/ifc.js-viewer/resources/folder-icon.svg");
+image2.classList.add("icon");
+loadButton1.appendChild(image2);
+
+sideMenu.appendChild(loadButton2);
+
 // const loadButton = createSideMenuButton("./resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
