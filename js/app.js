@@ -162,7 +162,20 @@ window.onkeydown = handleKeyDown;
 
 
 ///// Setup UI
-const loadButton = createSideMenuButton("./resources/folder-icon.svg");
+
+const loadButton = document.createElement("button");
+loadButton.classList.add("basic-button");
+
+const image = document.createElement("img");
+image.setAttribute("src", "./resources/folder-icon.svg");
+image.classList.add("icon");
+loadButton.appendChild(image);
+
+const sideMenu = document.getElementById("side-menu-left");
+sideMenu.appendChild(loadButton);
+
+
+// const loadButton = createSideMenuButton("./resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
