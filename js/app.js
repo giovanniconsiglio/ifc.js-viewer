@@ -171,7 +171,7 @@ window.onkeydown = handleKeyDown;
 // image.classList.add("icon");
 // loadButton.appendChild(image);
 
-// const sideMenu = document.getElementById("side-menu-left");
+const sideMenu = document.getElementById("side-menu-left");
 // sideMenu.appendChild(loadButton);
 
 const loadButton1 = document.createElement("button");
