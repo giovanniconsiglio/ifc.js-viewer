@@ -162,28 +162,28 @@ window.onkeydown = handleKeyDown;
 
 
 ///// Setup UI
-const loadButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/folder-icon.svg");
+const loadButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
 });
 
 const sectionButton = createSideMenuButton(
-  "https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/section-plane-down.svg"
+  "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/section-plane-down.svg"
 );
 sectionButton.addEventListener("click", () => {
   sectionButton.blur();
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/zoom-fit-gray.svg");
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
   viewer.context.fitToFrame();
 });
 
-const dimensionButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/dimensions.svg");
+const dimensionButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/dimensions.svg");
 
 dimensionButton.addEventListener("click", () => {
   dimensionButton.blur();
@@ -206,7 +206,7 @@ dimensionButton.addEventListener("click", () => {
   };
 });
 
-const serializeProperties = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/js/resources/json.svg");
+const serializeProperties = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/json.svg");
 
 serializeProperties.addEventListener("click", async () => {
   serializeProperties.blur();
