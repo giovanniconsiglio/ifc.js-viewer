@@ -174,6 +174,15 @@ loadButton.appendChild(image);
 const sideMenu = document.getElementById("side-menu-left");
 sideMenu.appendChild(loadButton);
 
+const loadButton1 = document.createElement("button");
+loadButton1.classList.add("basic-button");
+
+const image1 = document.createElement("img");
+image1.setAttribute("src", "https://github.com/giovanniconsiglio/ifc.js-viewer/blob/main/js/resources/folder-icon.svg");
+image1.classList.add("icon");
+loadButton1.appendChild(image1);
+
+sideMenu.appendChild(loadButton1);
 
 // const loadButton = createSideMenuButton("./resources/folder-icon.svg");
 loadButton.addEventListener("click", () => {
