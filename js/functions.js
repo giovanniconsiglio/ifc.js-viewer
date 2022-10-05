@@ -13,6 +13,14 @@ import {
   IFCCURTAINWALL,
   IFCDOOR,
   IFCBUILDINGSTOREY,
+  IFCFURNISHINGELEMENT,
+  IFCFURNISHINGELEMENTTYPE,
+  IFCFURNITURE,
+  IFCFURNITURETYPE,
+  IFCSYSTEMFURNITUREELEMENT,
+  IFCCOVERING,
+  IFCRAILING,
+  IFCROOF,
 } from "web-ifc";
 import {
   MeshLambertMaterial,
@@ -26,7 +34,6 @@ import { Dexie } from "dexie";
 // If the db exists, it opens; if not, dexie creates it automatically
 function createOrOpenDatabase() {
   const db = new Dexie("ModelDatabase");
-
   // DB with single table "bimModels" with primary key "name" and
   // an index on the property "id"
   db.version(1).stores({
@@ -50,6 +57,7 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
 
   // Create or open database with Dexie
   const db = createOrOpenDatabase();
+  await db.bimModels.clear();
 
   // Load the model
   // Export to glTF and JSON
@@ -63,6 +71,16 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
       windows: [IFCWINDOW],
       curtainwalls: [IFCMEMBER, IFCPLATE, IFCCURTAINWALL],
       doors: [IFCDOOR],
+      furniture: [IFCFURNISHINGELEMENT],
+      systemFurniture: [
+        IFCSYSTEMFURNITUREELEMENT,
+        IFCFURNISHINGELEMENTTYPE,
+        IFCFURNITURE,
+        IFCFURNITURETYPE,
+      ],
+      covering: [IFCCOVERING],
+      railing: [IFCRAILING],
+      roof: [IFCROOF],
       // pipes: [IFCFLOWFITTING, IFCFLOWSEGMENT, IFCFLOWTERMINAL],
       // undefined: [IFCBUILDINGELEMENTPROXY],
       levels: [IFCBUILDINGSTOREY],
@@ -95,7 +113,6 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
   await db.bimModels.bulkPut(models);
   // Deserialize the data
   const savedModel = await db.bimModels.toArray();
-  console.log(await db.bimModels.toArray());
 
   for (const [key, data] of Object.entries(savedModel)) {
     const dataFile = data.file;

@@ -73,6 +73,7 @@ inputElement.addEventListener(
     const ifcURL = URL.createObjectURL(changed.target.files[0]);
     const container = document.getElementById("button-container");
     await loadIfc(ifcURL, viewer, ifcModels, allPlans, container, obj);
+    viewer.context.fitToFrame();
     // browserPanel(viewer, obj, container);
   },
   false
