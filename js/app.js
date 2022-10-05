@@ -2,18 +2,6 @@ import { Color } from "../node_modules/three";
 import { IfcViewerAPI } from "../node_modules/web-ifc-viewer";
 import { createSideMenuButton } from "../js/gui-creator/gui-creator";
 import {
-  IFCSPACE,
-  IFCOPENINGELEMENT,
-  IFCWALL,
-  IFCWALLSTANDARDCASE,
-  IFCSLAB,
-  IFCWINDOW,
-  IFCMEMBER,
-  IFCPLATE,
-  IFCCURTAINWALL,
-  IFCDOOR,
-} from "web-ifc";
-import {
   MeshLambertMaterial,
   LineBasicMaterial,
   MeshBasicMaterial,
@@ -64,7 +52,9 @@ let obj = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 let firstModel = true;
 
-viewer.IFC.setWasmPath("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/wasm/");
+viewer.IFC.setWasmPath(
+  "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/wasm/"
+);
 // loadIfc("../../IFC/01.ifc");
 // viewer.IFC.loader.ifcManager.useWebWorkers(true, "../docs/assets/worker/IFCWorker.js");
 
@@ -160,9 +150,10 @@ window.onkeydown = handleKeyDown;
 //   }
 // };
 
-
 ///// Setup UI
-const loadButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/folder-icon.svg");
+const loadButton = createSideMenuButton(
+  "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/folder-icon.svg"
+);
 loadButton.addEventListener("click", () => {
   loadButton.blur();
   inputElement.click();
@@ -176,14 +167,18 @@ sectionButton.addEventListener("click", () => {
   viewer.clipper.toggle();
 });
 
-const zoomAllButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/zoom-fit-gray.svg");
+const zoomAllButton = createSideMenuButton(
+  "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/zoom-fit-gray.svg"
+);
 
 zoomAllButton.addEventListener("click", () => {
   zoomAllButton.blur();
   viewer.context.fitToFrame();
 });
 
-const dimensionButton = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/dimensions.svg");
+const dimensionButton = createSideMenuButton(
+  "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/dimensions.svg"
+);
 
 dimensionButton.addEventListener("click", () => {
   dimensionButton.blur();
@@ -206,37 +201,39 @@ dimensionButton.addEventListener("click", () => {
   };
 });
 
-const serializeProperties = createSideMenuButton("https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/json.svg");
+// const serializeProperties = createSideMenuButton(
+//   "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/resources/json.svg"
+// );
 
-serializeProperties.addEventListener("click", async () => {
-  serializeProperties.blur();
-  let jsonProps = [];
-  // console.log(jsonProps);
-  // console.log(ifcModels);
-  // Serialize properties
-  if (ifcModels.length > 1) {
-    for (let model of ifcModels) {
-      const result = await viewer.IFC.properties.serializeAllProperties(model);
-      // console.log(result);
-      jsonProps.push(result);
-    }
-  } else {
-    const result = await viewer.IFC.properties.serializeAllProperties(
-      ifcModels[0]
-    );
-    // console.log(result);
-    jsonProps = result;
-  }
-  // Download the properties as JSON file
-  const file = new File(jsonProps, "properties");
-  // console.log(jsonProps);
-  // console.log(file);
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(file);
-  link.download = "properties.json";
-  link.click();
-  link.remove();
-});
+// serializeProperties.addEventListener("click", async () => {
+//   serializeProperties.blur();
+//   let jsonProps = [];
+//   // console.log(jsonProps);
+//   // console.log(ifcModels);
+//   // Serialize properties
+//   if (ifcModels.length > 1) {
+//     for (let model of ifcModels) {
+//       const result = await viewer.IFC.properties.serializeAllProperties(model);
+//       // console.log(result);
+//       jsonProps.push(result);
+//     }
+//   } else {
+//     const result = await viewer.IFC.properties.serializeAllProperties(
+//       ifcModels[0]
+//     );
+//     // console.log(result);
+//     jsonProps = result;
+//   }
+//   // Download the properties as JSON file
+//   const file = new File(jsonProps, "properties");
+//   // console.log(jsonProps);
+//   // console.log(file);
+//   const link = document.createElement("a");
+//   link.href = URL.createObjectURL(file);
+//   link.download = "properties.json";
+//   link.click();
+//   link.remove();
+// });
 
 ///// Create properties menu
 const propsGUI = document.getElementById("ifc-property-menu-root");

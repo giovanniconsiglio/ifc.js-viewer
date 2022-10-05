@@ -23,24 +23,33 @@ import Drawing from "dxf-writer";
 import { Dexie } from "dexie";
 
 /////////////////////////////////////////////////////////////////////////////////////////////
-let properties;
-async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
-  // Create progress bar
-  const overlay = document.getElementById("loading-overlay");
-  const progressText = document.getElementById("loading-progress");
+// If the db exists, it opens; if not, dexie creates it automatically
+function createOrOpenDatabase() {
+  const db = new Dexie("ModelDatabase");
 
-  overlay.classList.remove("hidden");
-  progressText.innerText = `Loading`;
-
-  viewer.IFC.loader.ifcManager.setOnProgress((event) => {
-    const percentage = Math.floor((event.loaded * 100) / event.total);
-    progressText.innerText = `Loaded ${percentage}%`;
+  // DB with single table "bimModels" with primary key "name" and
+  // an index on the property "id"
+  db.version(1).stores({
+    bimModels: `
+        name,
+        id,
+        category,
+        level`,
   });
 
+  return db;
+}
+
+let properties;
+
+async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
   viewer.IFC.loader.ifcManager.parser.setupOptionalCategories({
     [IFCSPACE]: false,
     [IFCOPENINGELEMENT]: false,
   });
+
+  // Create or open database with Dexie
+  const db = createOrOpenDatabase();
 
   // Load the model
   // Export to glTF and JSON
@@ -54,57 +63,48 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
       windows: [IFCWINDOW],
       curtainwalls: [IFCMEMBER, IFCPLATE, IFCCURTAINWALL],
       doors: [IFCDOOR],
+      // pipes: [IFCFLOWFITTING, IFCFLOWSEGMENT, IFCFLOWTERMINAL],
+      // undefined: [IFCBUILDINGELEMENTPROXY],
       levels: [IFCBUILDINGSTOREY],
     },
     getProperties: true,
   });
   console.log(result);
-  // Download result
-  const link = document.createElement("a");
-  document.body.appendChild(link);
+  // Store the result in the browser memory
+  const models = [];
 
   for (const categoryName in result.gltf) {
     const category = result.gltf[categoryName];
     for (const levelName in category) {
       const file = category[levelName].file;
       if (file) {
-        console.log(file);
-        console.log(category);
-        console.log(categoryName);
-        console.log(levelName);
-        console.log(`${file.name}_${categoryName}_${levelName}.gltf`);
-        link.download = `${categoryName}_${levelName}.gltf`;
-        link.href = URL.createObjectURL(file);
-        link.click();
+        // Serialize data for saving it
+        const data = await file.arrayBuffer();
+        models.push({
+          name: result.id + categoryName + levelName,
+          id: result.id,
+          category: categoryName,
+          level: levelName,
+          file: data,
+        });
       }
     }
   }
+  console.log(models);
+  // Now, store all the models in the database
+  await db.bimModels.bulkPut(models);
+  // Deserialize the data
+  const savedModel = await db.bimModels.toArray();
+  console.log(await db.bimModels.toArray());
 
-  for (let jsonFile of result.json) {
-    link.download = `${jsonFile.name}`;
-    link.href = URL.createObjectURL(jsonFile);
-    link.click();
+  for (const [key, data] of Object.entries(savedModel)) {
+    const dataFile = data.file;
+    const file = new File([dataFile], "example");
+    const urlFile = URL.createObjectURL(file);
+    await viewer.GLTF.loadModel(urlFile);
   }
-
-  link.remove();
-
-  // Load geometry
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/doors_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/slabs_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/slabs_Nivel 2.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/walls_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/windows_Nivel 1.gltf");
-  await viewer.GLTF.loadModel("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/curtainwalls_Nivel 1.gltf");
-  // Load properties
-  const rawProperties = await fetch("https://github.com/giovanniconsiglio/ifc.js-viewer/blob/gh-pages/docs/assets/gltf/01/properties.json");
-  properties = await rawProperties.json();
-  // Get spatial tree
-  const tree = await constructSpatialTree();
-  console.log(tree);
-
-  overlay.classList.add("hidden");
 }
-
+///////////////////////////////////////////////////////////////////////////
 // Utils functions
 function getFirstItemOfType(type) {
   return Object.values(properties).find((item) => item.type === type);
