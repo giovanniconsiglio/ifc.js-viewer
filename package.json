@@ -15,13 +15,15 @@
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.3.0",
+    "copy-and-watch": "^0.1.6",
     "rollup": "^2.77.2"
   },
   "scripts": {
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "update-ifcjs": "npm i web-ifc-three@latest && npm i && copy-wasm",
-    "copy-wasm": "cpy node_modules/web-ifc/web-ifc.wasm . && cpy node_modules/web-ifc/web-ifc-mt.wasm ."
+    "copy": "copy-and-watch --watch . //10.10.110.211/web/lab/alessandria/",
+    "watch-copy":"rollup -c -w & copy-and-watch --watch . //10.10.110.211/web/lab/alessandria/"
   },
   "keywords": [],
   "author": "",

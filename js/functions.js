@@ -2,6 +2,7 @@ import { Color } from "../node_modules/three";
 import { IfcViewerAPI } from "../node_modules/web-ifc-viewer";
 import { createSideMenuButton } from "../js/gui-creator/gui-creator";
 import {
+  IFCBUILDINGELEMENTPROXY,
   IFCSPACE,
   IFCOPENINGELEMENT,
   IFCWALL,
@@ -21,6 +22,9 @@ import {
   IFCCOVERING,
   IFCRAILING,
   IFCROOF,
+  IFCFLOWFITTING,
+  IFCFLOWSEGMENT,
+  IFCFLOWTERMINAL,
 } from "web-ifc";
 import {
   MeshLambertMaterial,
@@ -66,6 +70,7 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
     onprogress: true,
     splitByFloors: true,
     categories: {
+      undefined: [IFCBUILDINGELEMENTPROXY],
       walls: [IFCWALL, IFCWALLSTANDARDCASE],
       slabs: [IFCSLAB],
       windows: [IFCWINDOW],
@@ -81,8 +86,7 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
       covering: [IFCCOVERING],
       railing: [IFCRAILING],
       roof: [IFCROOF],
-      // pipes: [IFCFLOWFITTING, IFCFLOWSEGMENT, IFCFLOWTERMINAL],
-      // undefined: [IFCBUILDINGELEMENTPROXY],
+      pipes: [IFCFLOWFITTING, IFCFLOWSEGMENT, IFCFLOWTERMINAL],
       levels: [IFCBUILDINGSTOREY],
     },
     getProperties: true,
@@ -118,7 +122,8 @@ async function loadIfc(url, viewer, ifcModels, allPlans, container, obj) {
     const dataFile = data.file;
     const file = new File([dataFile], "example");
     const urlFile = URL.createObjectURL(file);
-    await viewer.GLTF.loadModel(urlFile);
+    const model = await viewer.GLTF.loadModel(urlFile);
+    ifcModels.push(model);
   }
 }
 ///////////////////////////////////////////////////////////////////////////

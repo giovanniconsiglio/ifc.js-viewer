@@ -5,9 +5,26 @@ import {
   MeshLambertMaterial,
   LineBasicMaterial,
   MeshBasicMaterial,
+  PlaneGeometry,
+  ShaderMaterial,
 } from "../node_modules/three";
 import Drawing from "dxf-writer";
 import { loadIfc, browserPanel } from "./functions";
+import { BufferGeometry } from "three";
+import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
+
+import {
+  Group,
+  Mesh,
+  OrthographicCamera,
+  Vector3,
+  WebGLRenderTarget,
+  MeshDepthMaterial,
+} from "three";
+import { HorizontalBlurShader } from "three/examples/jsm/shaders/HorizontalBlurShader";
+import { VerticalBlurShader } from "three/examples/jsm/shaders/VerticalBlurShader";
+
+// import { MeshShadowDropper } from "web-ifc-viewer/dist/components/display/mesh-shadow-dropper";
 
 ///// Create Viewer
 // Creates subset materials
@@ -36,6 +53,7 @@ viewer.IFC.selector.selection.material = selectMat;
 const scene = viewer.context.getScene();
 const camera = viewer.context.getCamera();
 const renderer = viewer.context.getRenderer();
+const shadows = viewer.shadowDropper.shadows;
 
 ///// Create grid and axes
 viewer.grid.setGrid({
@@ -50,22 +68,25 @@ const ifcModels = [];
 const allPlans = [];
 let obj = {};
 /////////////////////////////////////////////////////////////////////////////////////////////////////
-let firstModel = true;
+
+// viewer.IFC.loader.ifcManager.useWebWorkers(
+//   true,
+//   "../docs/assets/worker/IFCWorker.js"
+// );
 
 viewer.IFC.setWasmPath(
   "https://giovanniconsiglio.github.io/ifc.js-viewer/docs/assets/wasm/"
 );
-// loadIfc("../../IFC/01.ifc");
-// viewer.IFC.loader.ifcManager.useWebWorkers(true, "../docs/assets/worker/IFCWorker.js");
 
 viewer.IFC.loader.ifcManager.applyWebIfcConfig({
   USE_FAST_BOOLS: true,
-  COORDINATE_TO_ORIGIN: true,
+  COORDINATE_TO_ORIGIN: false,
 });
 
 // Load file button
 const inputElement = document.createElement("input");
 inputElement.setAttribute("type", "file");
+inputElement.setAttribute("multiple", "multiple");
 inputElement.classList.add("hidden");
 inputElement.addEventListener(
   "change",
@@ -73,6 +94,28 @@ inputElement.addEventListener(
     const ifcURL = URL.createObjectURL(changed.target.files[0]);
     const container = document.getElementById("button-container");
     await loadIfc(ifcURL, viewer, ifcModels, allPlans, container, obj);
+    const modelMeshes = [];
+    for (const [key, model] of Object.entries(ifcModels)) {
+      // model.castShadow = true;
+      // model.updateMatrix();
+      modelMeshes.push(model.geometry);
+      // modelMesh.merge(model.geometry, model.matrix);
+      // viewer.shadowDropper.renderShadow(model.modelID);
+    }
+    console.log(modelMeshes);
+    const mergedMesh = mergeBufferGeometries(modelMeshes);
+    mergedMesh.computeBoundingBox();
+    mergedMesh.computeBoundingSphere();
+    console.log(mergedMesh);
+
+    console.log(viewer.shadowDropper);
+    console.log(viewer.meshShadowDropper);
+    viewer.meshShadowDropper.renderShadowOfMeshGeometry(mergedMesh);
+
+    // renderShadowOfMeshCustom(mergedMesh, 0, scene);
+
+    // viewer.shadowDropper.renderShadowOfMesh(mergedMesh);
+    // viewer.context.renderer.postProduction.active = true;
     viewer.context.fitToFrame();
     // browserPanel(viewer, obj, container);
   },
@@ -118,38 +161,38 @@ const handleKeyDown = async (event) => {
 window.onkeydown = handleKeyDown;
 
 // On click => pickIfcItem
-// document.addEventListener("click", (event) => {
-//   const modelId = viewer.IFC.getModelID();
-//   // console.log(modelId>=0);
-//   if (modelId !== null) {
-//     if (event.shiftKey) {
-//       viewer.IFC.selector.pickIfcItem(false, false);
-//     } else {
-//       viewer.IFC.selector.pickIfcItem();
-//     }
-//   } else {
-//     viewer.IFC.selector.unpickIfcItems();
-//   }
-// });
+document.addEventListener("click", (event) => {
+  const modelId = viewer.IFC.getModelID();
+  // console.log(modelId>=0);
+  if (modelId !== null) {
+    if (event.shiftKhiseey) {
+      viewer.IFC.selector.pickIfcItem(false, false);
+    } else {
+      viewer.IFC.selector.pickIfcItem();
+    }
+  } else {
+    viewer.IFC.selector.unpickIfcItems();
+  }
+});
 
 // On double click => getProperties
-// window.ondblclick = async () => {
-//   if (viewer.clipper.active) {
-//     cameraControls.enabled = false; ////////TO BE FIXED
-//     viewer.clipper.createPlane();
-//   } else {
-//     const result = await viewer.IFC.selector.highlightIfcItem(true);
+window.ondblclick = async () => {
+  if (viewer.clipper.active) {
+    cameraControls.enabled = false; ////////TO BE FIXED
+    viewer.clipper.createPlane();
+  } else {
+    const result = await viewer.IFC.selector.highlightIfcItem(true);
 
-//     if (!result) {
-//       removeAllChildren(propsGUI);
-//       viewer.IFC.selector.unHighlightIfcItems();
-//       return;
-//     }
-//     const { modelID, id } = result;
-//     const props = await viewer.IFC.getProperties(modelID, id, true, false);
-//     createPropertiesMenu(props);
-//   }
-// };
+    if (!result) {
+      removeAllChildren(propsGUI);
+      viewer.IFC.selector.unHighlightIfcItems();
+      return;
+    }
+    const { modelID, id } = result;
+    const props = await viewer.IFC.getProperties(modelID, id, true, false);
+    createPropertiesMenu(props);
+  }
+};
 
 ///// Setup UI
 const loadButton = createSideMenuButton(
