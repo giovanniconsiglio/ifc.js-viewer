@@ -5,26 +5,10 @@ import {
   MeshLambertMaterial,
   LineBasicMaterial,
   MeshBasicMaterial,
-  PlaneGeometry,
-  ShaderMaterial,
 } from "../node_modules/three";
 import Drawing from "dxf-writer";
 import { loadIfc, browserPanel } from "./functions";
-import { BufferGeometry } from "three";
 import { mergeBufferGeometries } from "three/examples/jsm/utils/BufferGeometryUtils";
-
-import {
-  Group,
-  Mesh,
-  OrthographicCamera,
-  Vector3,
-  WebGLRenderTarget,
-  MeshDepthMaterial,
-} from "three";
-import { HorizontalBlurShader } from "three/examples/jsm/shaders/HorizontalBlurShader";
-import { VerticalBlurShader } from "three/examples/jsm/shaders/VerticalBlurShader";
-
-// import { MeshShadowDropper } from "web-ifc-viewer/dist/components/display/mesh-shadow-dropper";
 
 ///// Create Viewer
 // Creates subset materials
@@ -67,6 +51,7 @@ viewer.axes.setAxes();
 const ifcModels = [];
 const allPlans = [];
 let obj = {};
+const modelMeshes = [];
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // viewer.IFC.loader.ifcManager.useWebWorkers(
@@ -91,31 +76,21 @@ inputElement.classList.add("hidden");
 inputElement.addEventListener(
   "change",
   async (changed) => {
-    const ifcURL = URL.createObjectURL(changed.target.files[0]);
-    const container = document.getElementById("button-container");
-    await loadIfc(ifcURL, viewer, ifcModels, allPlans, container, obj);
-    const modelMeshes = [];
-    for (const [key, model] of Object.entries(ifcModels)) {
-      // model.castShadow = true;
-      // model.updateMatrix();
-      modelMeshes.push(model.geometry);
-      // modelMesh.merge(model.geometry, model.matrix);
-      // viewer.shadowDropper.renderShadow(model.modelID);
+    const files = changed.target.files;
+    for (const [key, file] of Object.entries(files)) {
+      const ifcURL = URL.createObjectURL(file);
+      const container = document.getElementById("button-container");
+      await loadIfc(ifcURL, viewer, ifcModels, allPlans, container, obj);
+      for (const [key, model] of Object.entries(ifcModels)) {
+        model.castShadow = true;
+        modelMeshes.push(model.geometry);
+      }
     }
-    console.log(modelMeshes);
+
     const mergedMesh = mergeBufferGeometries(modelMeshes);
-    mergedMesh.computeBoundingBox();
-    mergedMesh.computeBoundingSphere();
-    console.log(mergedMesh);
-
-    console.log(viewer.shadowDropper);
-    console.log(viewer.meshShadowDropper);
+    // mergedMesh.computeBoundingBox();
+    // mergedMesh.computeBoundingSphere();
     viewer.meshShadowDropper.renderShadowOfMeshGeometry(mergedMesh);
-
-    // renderShadowOfMeshCustom(mergedMesh, 0, scene);
-
-    // viewer.shadowDropper.renderShadowOfMesh(mergedMesh);
-    // viewer.context.renderer.postProduction.active = true;
     viewer.context.fitToFrame();
     // browserPanel(viewer, obj, container);
   },
